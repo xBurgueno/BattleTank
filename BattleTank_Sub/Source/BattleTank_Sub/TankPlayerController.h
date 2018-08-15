@@ -22,18 +22,24 @@ private:
 	ATank * GetControlledTank() const;
 	
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
-	
-public:
-	
+
+	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const;
+
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HiLocation) const;
+
 	virtual void BeginPlay() override; //Overide Checks if that the method exist in the heirachy
 	
 	virtual void Tick(float DeltaTime)  override;
 
-	//Start tank moving the barrel so the that shot would hit
-	//wjere the 
-
 	void AimTowardsCrossHair();
 
-	 //return OutHitLocation as parameter
+	UPROPERTY(EditAnywhere)
+	float CrosshairXLocation = 0.5f;
+	
+	UPROPERTY(EditAnywhere)
+	float CrosshairYLocation = 0.3333f;
+
+	UPROPERTY(EditAnywhere)
+	float LineTraceRange = 1000000.0f; //10 km in meters 
 };
 

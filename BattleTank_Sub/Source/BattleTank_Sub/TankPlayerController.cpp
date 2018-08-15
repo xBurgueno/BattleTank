@@ -42,9 +42,9 @@ void ATankPlayerController::AimTowardsCrossHair()
 	FVector HitLocation; //OUT Parameter
 	if (GetSightRayHitLocation(HitLocation)) //has "side-effect", is going to line trace
 	{
-		UE_LOG(LogTemp, Error, TEXT("HitLocation: %s"), *HitLocation.ToString());
+		//UE_LOG(LogTemp, Error, TEXT("Hit Location: %s"), *HitLocation.ToString());
 
-		//TODO tell controlled tank to aim this point
+		GetControlledTank()->AimAt(HitLocation);
 		
 
 	}
@@ -52,8 +52,55 @@ void ATankPlayerController::AimTowardsCrossHair()
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
-	OutHitLocation = FVector(1.0);
+	
+	// Find the crosshair in pixle coordinates
+	int32 ViewPortSizeX, ViewPortSizeY;
+
+	GetViewportSize(ViewPortSizeX, ViewPortSizeY); //Out Paramaters
+	auto ScreenLocation = FVector2D((ViewPortSizeX * CrosshairXLocation),
+		(ViewPortSizeY * CrosshairYLocation));
+
+
+	//"De-Projection" the screen position of the crosshair to a world direction
+	FVector LookDirection;
+	if (GetLookDirection(ScreenLocation, LookDirection))
+	{
+		//Line-trace along that LookDirection, and see what we hit (up to max range)
+		GetLookVectorHitLocation(LookDirection, OutHitLocation);
+
+	}
 	return true;
+}
 
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
+{
+	FVector CameraWorldLocation; // For discarding
+	
+	return DeprojectScreenPositionToWorld(
+		ScreenLocation.X,
+		ScreenLocation.Y,
+		CameraWorldLocation, 
+		LookDirection);
 
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const
+{
+	FHitResult HitResult;
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	auto EndLocation = StartLocation + (LookDirection * LineTraceRange);
+	
+	if (GetWorld()->LineTraceSingleByChannel(
+			HitResult,
+			StartLocation,
+			EndLocation,
+			ECollisionChannel::ECC_Visibility)
+	)
+	{
+		HitLocation = HitResult.Location;
+		return true;		
+	}
+	
+	HitLocation = FVector(0);
+		return false; //Line Trace didnt hit anything
 }
