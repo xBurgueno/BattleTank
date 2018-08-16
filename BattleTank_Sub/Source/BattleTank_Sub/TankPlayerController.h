@@ -2,16 +2,16 @@
 
 #pragma once
 
-#include "Tank.h"
+
 #include "Engine/World.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
-/**
- * 
- */
+//forward decelerations 
+class ATank;
+
 UCLASS()
 class BATTLETANK_SUB_API ATankPlayerController : public APlayerController
 {
