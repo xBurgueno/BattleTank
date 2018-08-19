@@ -3,6 +3,7 @@
 
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "Projectile.h"
 #include "TankTracks.h"
 #include "TankBarrel.h"
@@ -17,6 +18,8 @@ ATank::ATank()
 
 	//No need to protect points as added at construction
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("AimingComponent"));
+
+	
 }
 
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)

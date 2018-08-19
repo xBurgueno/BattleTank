@@ -8,8 +8,8 @@
 void UTankTracks::SetThrottle(float Throttle)
 {
 	
-	auto name = GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s Throttle Speed: %f"), *name , Throttle);
+// 	auto name = GetName();
+// 	UE_LOG(LogTemp, Warning, TEXT("%s Throttle Speed: %f"), *name , Throttle);
 
 	//TODO clamp actual throttle value so player can't overdrive
 
@@ -19,3 +19,4 @@ void UTankTracks::SetThrottle(float Throttle)
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 }
+	
