@@ -27,3 +27,21 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
 }
+
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
+{
+	//No need to call super, we are changing the functionality
+	
+	//They are in world Space, TF & AFI
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal(); //Forward Vector is X-Axis
+	auto AiForwardIntention = MoveVelocity.GetSafeNormal(); //Unit Vector in direction AiWould like to go
+
+	auto ForwardThrow = FVector::DotProduct(TankForward, AiForwardIntention);
+	IntendMoveForward(ForwardThrow);
+
+
+	auto RightThrow = FVector::CrossProduct(TankForward, AiForwardIntention).Z;
+	IntendTurnRight(RightThrow);
+	// UE_LOG(LogTemp, Error, TEXT("Tank Name: %s Vectoring to : %s"), *TankName, *MoveVelocityString);
+
+}
