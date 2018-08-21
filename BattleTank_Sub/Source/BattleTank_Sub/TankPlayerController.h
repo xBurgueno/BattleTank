@@ -17,9 +17,13 @@ class BATTLETANK_SUB_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+protected:
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	ATank * GetControlledTank() const;
 private:
 
-	ATank * GetControlledTank() const;
+	
 	
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
 
@@ -27,7 +31,7 @@ private:
 
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HiLocation) const;
 
-	virtual void BeginPlay() override; //Overide Checks if that the method exist in the heirachy
+	virtual void BeginPlay() override; //Override Checks if that the method exist in the heirachy
 	
 	virtual void Tick(float DeltaTime)  override;
 

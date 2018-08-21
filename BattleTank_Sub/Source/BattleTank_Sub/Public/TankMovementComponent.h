@@ -17,22 +17,25 @@ UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_SUB_API UTankMovementComponent : public UNavMovementComponent
 {
 	GENERATED_BODY()
-
+		
 public:
 
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void IntendMoveForward(float Throw);
 	
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void InitializeComponent(UTankTracks * LeftTrackToSet, UTankTracks* RightTrackToSet);
 	
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void IntendTurnRight(float Throw);
 
 	//TODO Check best protection
-	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
 
 private:
 	UTankTracks * LeftTrack = nullptr;
 	UTankTracks * RightTrack = nullptr;
+
+	//Called from the path finding logic by the AI controllers
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 };

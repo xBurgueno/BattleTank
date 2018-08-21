@@ -72,8 +72,8 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	Turret->Rotate(DeltaRotator.Yaw); //TODO Adjust Number
 }
 
-void UTankAimingComponent::MoveTurretTowards(FVector RotationDirection)
-{
+//void UTankAimingComponent::MoveTurretTowards(FVector RotationDirection)
+//{
 
-}
+//}
 
