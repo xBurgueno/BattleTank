@@ -2,13 +2,18 @@
 
 
 #include "TankPlayerController.h"
+#include "TankAimingComponent.h"
 #include "Tank.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-}
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+
+	if (!ensure(AimingComponent)) { return; }
+	FoundAimingComponent(AimingComponent);
+}	
 
 void ATankPlayerController::Tick(float  DeltaTime)
 {
@@ -28,7 +33,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrossHair()
 {
-	if (!GetControlledTank()) { return; }
+	if (!ensure(GetControlledTank()) ) { return; }
 
 	FVector HitLocation; //OUT Parameter
 	if (GetSightRayHitLocation(HitLocation)) //has "side-effect", is going to line trace

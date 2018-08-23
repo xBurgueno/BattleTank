@@ -7,7 +7,7 @@
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
-	if (!LeftTrack || !RightTrack) { return; }
+	if (!ensure (LeftTrack || !RightTrack) ) { return; }
 	LeftTrack->SetThrottle(Throw); //I set these in the Tank_BP and have pointers of them in Hfile
 	RightTrack->SetThrottle(Throw); // The SetThrottle lives in TankTacks.h and I can use it here bc *
 
@@ -23,7 +23,7 @@ void UTankMovementComponent::InitializeComponent(UTankTracks * LeftTrackToSet, U
 
 void UTankMovementComponent::IntendTurnRight(float Throw)
 {
-	if (!LeftTrack || !RightTrack) { return; }
+	if (!ensure (LeftTrack || !RightTrack) ) { return; }
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
 }

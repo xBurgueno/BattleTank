@@ -11,6 +11,11 @@
 
 //forward decelerations 
 class ATank;
+class UTankAimingComponent;
+
+/**
+ * Responsible for helping the player aim?
+ */
 
 UCLASS()
 class BATTLETANK_SUB_API ATankPlayerController : public APlayerController
@@ -18,6 +23,9 @@ class BATTLETANK_SUB_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 protected:
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent * AimingCompRef);
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank * GetControlledTank() const;
