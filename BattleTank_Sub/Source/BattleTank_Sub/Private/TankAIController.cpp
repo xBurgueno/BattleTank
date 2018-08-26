@@ -29,7 +29,7 @@ void ATankAIController::Tick(float DeltaTime)
 	AimingComponent->AimAt(PlayerTank->GetActorLocation());
 		
 	//Fire if Ready
-	//ControlledTank->Fire(); //TODO dot fire every frame
+	AimingComponent->Fire(); //TODO dot fire every frame
 	
 }
 

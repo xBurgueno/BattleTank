@@ -9,7 +9,6 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
-
 //Enum for Aiming State
 UENUM()
 enum class EFiringState : uint8
@@ -19,10 +18,10 @@ enum class EFiringState : uint8
 	Locked
 };
 
-
 //holds barrels properties and elevate method
 class UTankBarrel; 
 class UTankTurret;
+class AProjectile;
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -37,6 +36,10 @@ public:
 	void Initializer(UTankBarrel* BarreltoSet, UTankTurret* TUrretToSet);
 
 	void AimAt(FVector HitLocation);
+
+	UFUNCTION(BlueprintCallable)
+	void Fire();
+
 	
 protected:
 
@@ -48,6 +51,16 @@ private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
+	//********************************
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing") //Can only be edited in blueprints
+	float ReloadTimeInSeconds = 3.0f;
+
+	double LastFireTime = 0.0;
+
+	//**********************************************************
 	void MoveBarrelTowards(FVector AimDirection);
 
 	// Sets default values for this component's properties
