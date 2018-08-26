@@ -46,7 +46,7 @@ protected:
 	//Enum Fire Status
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FireState = EFiringState::Reloading;
-
+	
 private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
@@ -70,6 +70,8 @@ private:
 	float LaunchSpeed = 5000.0f;
 	//void MoveTurretTowards(FVector RotationDirection);
 
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType,
+	FActorComponentTickFunction *ThisTickFunction) override;
 	
-	
+	virtual void BeginPlay() override;
 };
