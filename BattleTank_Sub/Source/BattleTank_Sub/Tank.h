@@ -8,7 +8,6 @@
 
 //Forward Declaration
 class UTankBarrel; 
-class UTankAimingComponent;
 class UTankTurret;
 class AProjectile;
 
@@ -20,7 +19,7 @@ class BATTLETANK_SUB_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
-	void AimAt(FVector HitLocation);
+	
 
 	UFUNCTION(BlueprintCallable)
 	void Fire();
@@ -29,9 +28,6 @@ public:
 
 protected:
 	
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* TankAimingComponent = nullptr;
-
 private:
 	// Sets default values for this pawn's properties
 	ATank();
@@ -39,8 +35,7 @@ private:
 	virtual void BeginPlay() override;
 
 	//TODO remove once firing is moved to aiming component
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float LaunchSpeed = 5000.0f;
+	double LaunchSpeed = 5000.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing") //Can only be edited in blueprints
 	float ReloadTimeInSeconds = 3.0f;

@@ -2,7 +2,6 @@
 
 
 #include "Tank.h"
-#include "TankAimingComponent.h"
 #include "Projectile.h"
 #include "TankTracks.h"
 #include "TankBarrel.h"
@@ -22,7 +21,6 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATank::Fire()
@@ -46,11 +44,3 @@ void ATank::Fire()
 	}
 }
 
-
-void ATank::AimAt(FVector HitLocation)
-{
-	if (!ensure(TankAimingComponent) ) { return; }
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-
-	UE_LOG(LogTemp, Error, TEXT("I;m Being Called here"));
-}

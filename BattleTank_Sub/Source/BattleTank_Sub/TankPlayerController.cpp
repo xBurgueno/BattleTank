@@ -3,14 +3,13 @@
 
 #include "TankPlayerController.h"
 #include "TankAimingComponent.h"
-#include "Tank.h"
+
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
 	FoundAimingComponent(AimingComponent);
 }	
@@ -23,41 +22,30 @@ void ATankPlayerController::Tick(float  DeltaTime)
 	
 }
 	
-
-
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-
-}
-
 void ATankPlayerController::AimTowardsCrossHair()
 {
-	if (!ensure(GetControlledTank()) ) { return; }
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
 
 	FVector HitLocation; //OUT Parameter
 	if (GetSightRayHitLocation(HitLocation)) //has "side-effect", is going to line trace
 	{
-		//UE_LOG(LogTemp, Error, TEXT("Hit Location: %s"), *HitLocation.ToString());
-
-		GetControlledTank()->AimAt(HitLocation);
-		
-
+		AimingComponent->AimAt(HitLocation);
 	}
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
 	
-	// Find the crosshair in pixle coordinates
+	// Find the cross hair in pixel coordinates
 	int32 ViewPortSizeX, ViewPortSizeY;
 
-	GetViewportSize(ViewPortSizeX, ViewPortSizeY); //Out Paramaters
+	GetViewportSize(ViewPortSizeX, ViewPortSizeY); //Out Parameters
 	auto ScreenLocation = FVector2D((ViewPortSizeX * CrosshairXLocation),
 		(ViewPortSizeY * CrosshairYLocation));
 
 
-	//"De-Projection" the screen position of the crosshair to a world direction
+	//"De-Projection" the screen position of the cross hair to a world direction
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{

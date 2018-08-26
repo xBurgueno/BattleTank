@@ -10,7 +10,6 @@
 #include "TankPlayerController.generated.h"
 
 //forward decelerations 
-class ATank;
 class UTankAimingComponent;
 
 /**
@@ -27,8 +26,6 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent * AimingCompRef);
 
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank * GetControlledTank() const;
 private:
 
 	
