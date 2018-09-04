@@ -7,7 +7,7 @@
 
 UTankTracks::UTankTracks()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 	
 	
 }
@@ -19,34 +19,43 @@ void UTankTracks::BeginPlay()
 }
 
 
-void UTankTracks::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UTankTracks::OnHit(UPrimitiveComponent* HitComponent, AActor* OhterActor, UPrimitiveComponent* OtherComponents, FVector NormalImpulses, const FHitResult& Hit)
 {
-	//Super::TickComponent();
+	//don't use a boolean flag! 
+	DriveTrack();
+	ApplySidewaysForce();
 
-	auto SlippageSpeed = FVector::DotProduct(GetComponentVelocity(), GetRightVector());
-	
-	//Workout the required acceleration this frame to correct
-	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
-	
-	//Calculate and apply sideways force ( F = m a)
-	auto TankRoot = Cast<UStaticMeshComponent>( GetOwner()->GetRootComponent() );
-
-	auto CorrectionForce = (TankRoot->GetMass() * CorrectionAcceleration) / 2;
-	TankRoot->AddForce(CorrectionForce);
+	//Reset throttle
+	CurrentThrottle = 0;
 
 }
 
-void UTankTracks::OnHit(UPrimitiveComponent* HitComponent, AActor* OhterActor, UPrimitiveComponent* OtherComponents, FVector NormalImpulses, const FHitResult& Hit)
+void UTankTracks::ApplySidewaysForce()
 {
-	UE_LOG(LogTemp, Error, TEXT("This is A test!"));
+	auto SlippageSpeed = FVector::DotProduct(GetComponentVelocity(), GetRightVector());
 
+	//Workout the required acceleration this frame to correct
+	auto DeltaTime = GetWorld()->GetDeltaSeconds();
+	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
+
+	//Calculate and apply sideways force ( F = m a)
+	auto TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
+
+	auto CorrectionForce = (TankRoot->GetMass() * CorrectionAcceleration) / 2;
+	TankRoot->AddForce(CorrectionForce);
 }
 
 void UTankTracks::SetThrottle(float Throttle)
 {
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1, 1);
+
+}
+
+void UTankTracks::DriveTrack()
+{
 	//TODO clamp actual throttle value so player can't overdrive
 
-	auto ForceApplied = GetForwardVector() * Throttle *TrackMaxDrivingForce;
+	auto ForceApplied = GetForwardVector() * CurrentThrottle *TrackMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation();
 
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
