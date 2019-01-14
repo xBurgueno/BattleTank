@@ -8,6 +8,11 @@
 #include "Components/StaticMeshComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "PhysicsEngine/RadialForceComponent.h"
+#include "GameFramework/DamageType.h"
+#include "Containers/Array.h"
+// #include "EngineKismetLibraryClasses.h"
 #include "Projectile.generated.h"
 
 
@@ -30,6 +35,12 @@ protected:
 
 private:
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float DestroyDelay = 10.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float ProjectileDamage = 10.0f;
+
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -47,4 +58,6 @@ private:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponents, FVector NormalImpulses, const FHitResult& Hit);
 	
+	
+	void OnTimerExprire();
 };
