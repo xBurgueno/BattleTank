@@ -26,6 +26,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent * AimingCompRef);
 
+	UFUNCTION()
+	void OnPossesedTankDeath();
+
 private:
 
 	
@@ -36,6 +39,8 @@ private:
 
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HiLocation) const;
 
+	void SetPawn(APawn* InPawn);
+	
 	virtual void BeginPlay() override; //Override Checks if that the method exist in the heirachy
 	
 	virtual void Tick(float DeltaTime)  override;
